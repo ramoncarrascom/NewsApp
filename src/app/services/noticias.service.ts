@@ -25,15 +25,15 @@ export class NoticiasService {
     return this.http.get<T>(query, {headers});
   }
 
-  getTopHeadlines(): Observable<RespuestaTopHeadlines> {
+  getTopHeadlines(pagina: number): Observable<RespuestaTopHeadlines> {
 
-    return this.ejecutarQuery<RespuestaTopHeadlines>('/top-headlines?country=us');
+    return this.ejecutarQuery<RespuestaTopHeadlines>(`/top-headlines?country=us&page=${pagina}`);
 
   }
 
-  getTopHeadlinesCategoria(categoria: string): Observable<RespuestaTopHeadlines> {
+  getTopHeadlinesCategoria(categoria: string, pagina: number): Observable<RespuestaTopHeadlines> {
 
-    return this.ejecutarQuery<RespuestaTopHeadlines>(`/top-headlines?country=us&category=${categoria}`);
+    return this.ejecutarQuery<RespuestaTopHeadlines>(`/top-headlines?country=us&category=${categoria}&page=${pagina}`);
 
   }
 }

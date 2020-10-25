@@ -10,17 +10,45 @@ import { Article } from '../../interfaces/interfaces';
 export class Tab1Page implements OnInit {
 
   noticias: Article[] = [];
+  paginaActual: number;
 
   constructor(private noticiasSrv: NoticiasService) {
 
   }
 
   ngOnInit(): void {
-    this.noticiasSrv.getTopHeadlines()
-      .subscribe( resp => {
-        console.log(resp);
-        this.noticias.push(...resp.articles);
-      });
+
+    this.paginaActual = 1;
+    this.cargarNoticias(this.paginaActual);
+
+  }
+
+  loadData(event: any) {
+
+    this.cargarNoticias(++this.paginaActual, event.target);
+
+  }
+
+  cargarNoticias(pagina: number, infiniteScrollCallback?: any) {
+
+      this.noticiasSrv.getTopHeadlines(pagina)
+        .subscribe( resp => {
+          console.log(resp);
+
+          this.noticias.push(...resp.articles);
+
+          if (infiniteScrollCallback) {
+
+            infiniteScrollCallback.complete();
+
+            if (resp.articles.length === 0) {
+              infiniteScrollCallback.disabled = true;
+            }
+
+          }
+
+        });
+
   }
 
 }
