@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Article } from 'src/app/interfaces/interfaces';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { ActionSheetController } from '@ionic/angular';
 
 @Component({
@@ -15,7 +16,8 @@ export class NoticiaComponent implements OnInit {
   @Input() indice: number = 0;
 
   constructor( private iab: InAppBrowser,
-                private actionSheetCtrl: ActionSheetController ) { }
+                private actionSheetCtrl: ActionSheetController,
+                private socialSharing: SocialSharing ) { }
 
   ngOnInit() {}
 
@@ -33,7 +35,12 @@ export class NoticiaComponent implements OnInit {
         icon: 'share',
         cssClass: 'action-dark',
         handler: () => {
-          console.log('Share clicked');
+          this.socialSharing.share(
+            this.noticia.title,
+            this.noticia.source.name,
+            null,
+            this.noticia.url
+          );
         }
       },
       {
